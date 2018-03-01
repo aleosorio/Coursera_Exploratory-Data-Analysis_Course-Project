@@ -1,7 +1,11 @@
-# CALLING LIBRARIES TO USE
-library(dplyr)
-library(lubridate)
-library(ggplot2)
+# PROBLEM
+## Have total emissions from PM2.5 decreased in the United States
+## from 1999 to 2008? Using the base plotting system, make a plot
+## showing the total PM2.5 emission from all sources for each of
+## the years 1999, 2002, 2005, and 2008.
+
+# CALLING LIBRARIES
+library(tidyverse)
 
 # SETTING WORKING DIRECTORY
 setwd("C:/Users/lenovo/Documents/MAO/Aprendizaje/Data Science/Exploratory Data Analysis_Coursera/Course Project/Data")
@@ -10,7 +14,24 @@ setwd("C:/Users/lenovo/Documents/MAO/Aprendizaje/Data Science/Exploratory Data A
 sumdat <- readRDS("summarySCC_PM25.rds")
 sccdat <- readRDS("Source_Classification_Code.rds")
 
-# GENERATING DATASET TO WORK WITH
-## Creating unique and enriched dataset by adding sccdat data to sumdat, using SCC variable as key
-unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
+# GENERATING DATASET
+        ## Joining sccdat with sumdat (key = "SCC") into unique dataset
+        unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
 
+        ## Subsetting required dataset into meandot to plot
+        findat <- subset(unidat, unidat$year == c(1999, 2002, 2005, 2008))
+        meandat <- cbind(findat$year, findat$Emissions) # 2 column matrix w/year and emissions
+        meandot <- tapply(meandat[,2], meandat[,1], mean) # vector w/yearly emissions' means
+        meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
+
+# PLOTTING AND SAVING INTO FILE
+        ## Opening PNG device to create "plot1.png"
+        png(filename = "plot1.png")
+
+        ## Plotting
+        par(mar = c(4,4,2,1), mfcol = c(1, 1))
+        with(meandot, plot(names, emissions, pch = 19 , xlab = "Year", ylab = "Yearly Avg Emissions"))
+        with(meandot, abline(lm(emissions ~ names), lwd = 2)) # linear yearly emissions' means
+
+        ## Closing PNG device
+        dev.off()
