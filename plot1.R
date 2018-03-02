@@ -1,8 +1,11 @@
-# PROBLEM
+# PROBLEM 1
 ## Have total emissions from PM2.5 decreased in the United States
 ## from 1999 to 2008? Using the base plotting system, make a plot
 ## showing the total PM2.5 emission from all sources for each of
 ## the years 1999, 2002, 2005, and 2008.
+
+## ANSWER: Indeed, from a yearly mean of 6.6 in 1999, down to 1.8
+## in 2008.  It can also be seen through linear modeling, on the plot.
 
 # CALLING LIBRARIES
 library(tidyverse)
@@ -15,12 +18,14 @@ sumdat <- readRDS("summarySCC_PM25.rds")
 sccdat <- readRDS("Source_Classification_Code.rds")
 
 # GENERATING DATASET
+        ## Converting SCC variable from factor to character
+        sccdat$SCC <- as.character(sccdat$SCC)
+
         ## Joining sccdat with sumdat (key = "SCC") into unique dataset
         unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
 
         ## Subsetting required dataset into meandot to plot
-        findat <- subset(unidat, unidat$year == c(1999, 2002, 2005, 2008))
-        meandat <- cbind(findat$year, findat$Emissions) # 2 column matrix w/year and emissions
+        meandat <- cbind(unidat$year, unidat$Emissions) # 2 column matrix w/year and emissions
         meandot <- tapply(meandat[,2], meandat[,1], mean) # vector w/yearly emissions' means
         meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
 

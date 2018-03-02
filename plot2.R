@@ -3,6 +3,9 @@
 ## City, Maryland (fips == "24510") from 1999 to 2008? Use the
 ## base plotting system to make a plot answering this question.
 
+## ANSWER: Indeed, from a yearly mean of 10.2 in 1999, down to 2.7
+## in 2008.  It can also be seen through linear modeling, on the plot.
+
 # CALLING LIBRARIES
 library(tidyverse)
 
@@ -14,11 +17,14 @@ sumdat <- readRDS("summarySCC_PM25.rds")
 sccdat <- readRDS("Source_Classification_Code.rds")
 
 # GENERATING DATASET
+        ## Converting SCC variable from factor to character
+        sccdat$SCC <- as.character(sccdat$SCC)
+
         ## Joining sccdat with sumdat (key = "SCC") into unique dataset
         unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
 
         ## Subsetting required dataset into meandot to plot
-        findat <- subset(unidat, unidat$year == 1999:2008 & unidat$fips == "24510") # filtering by year and fips
+        findat <- subset(unidat, unidat$fips == "24510") # filtering by Baltimore's fip
         meandat <- cbind(findat$year, findat$Emissions) # 2 column matrix w/year and emissions
         meandot <- tapply(meandat[,2], meandat[,1], mean) # vector w/yearly emissions' means
         meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
