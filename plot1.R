@@ -25,8 +25,8 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
 
         ## Subsetting required dataset into meandot to plot
-        meandat <- cbind(unidat$year, unidat$Emissions) # 2 column matrix w/year and emissions
-        meandot <- tapply(meandat[,2], meandat[,1], mean) # vector w/yearly emissions' means
+        meandat <- select(unidat, year, Emissions) # selecting required variables
+        meandot <- tapply(meandat$Emissions, meandat$year, mean) # vector w/yearly emissions' means
         meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
 
 # PLOTTING AND SAVING INTO FILE
