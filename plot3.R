@@ -35,7 +35,10 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         png(filename = "plot3.png")
         
         ## Plotting
-        ggplot(meandot, aes(year, Emissions)) + geom_point(aes(color = type)) + geom_smooth(aes(color = type), method = "lm", se = FALSE) + labs(title = "Avg Yearly PM2.5 Emissions, by Type")
+        ggplot(meandot, aes(year, Emissions)) +
+                geom_point(aes(color = type)) +
+                geom_smooth(aes(color = type), method = "lm", se = FALSE) +
+                labs(title = "Avg Yearly PM2.5 Emissions, by Type")
 
         ## Closing PNG device
         dev.off()
