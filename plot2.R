@@ -4,7 +4,7 @@
 ## base plotting system to make a plot answering this question.
 
 ## ANSWER: Indeed, from a yearly mean of 10.2 in 1999, down to 2.7
-## in 2008.  It can also be seen through linear modeling, on the plot.
+## in 2008.  Clearly seen through linear modeling, on the plot.
 
 # CALLING LIBRARIES
 library(tidyverse)
@@ -13,21 +13,15 @@ library(tidyverse)
 setwd("C:/Users/lenovo/Documents/MAO/Aprendizaje/Data Science/Exploratory Data Analysis_Coursera/Course Project/Data")
 
 # READING RAW DATA FROM WORKING DIRECTORY IN PC
-sumdat <- readRDS("summarySCC_PM25.rds")
-sccdat <- readRDS("Source_Classification_Code.rds")
+sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this problem
 
 # GENERATING DATASET
-        ## Converting SCC variable from factor to character
-        sccdat$SCC <- as.character(sccdat$SCC)
-
-        ## Joining sccdat with sumdat (key = "SCC") into unique dataset
-        unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
-
         ## Subsetting required dataset into meandot to plot
-        findat <- filter(unidat, unidat$fips == "24510") # filtering by Baltimore's fip
-        meandat <- select(findat, year, Emissions) # selecting required variables
-        meandot <- tapply(meandat$Emissions, meandat$year, mean) # vector w/yearly emissions' means
-        meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
+        findat <- sumdat %>%
+                filter(.$fips == "24510") %>% # only Baltimore
+                select(year, Emissions) %>% # selecting required variables
+                group_by(year) %>%
+                summarize(Emissions_mean = mean(Emissions))
 
 # PLOTTING AND SAVING INTO FILE
         ## Opening PNG device
@@ -35,8 +29,8 @@ sccdat <- readRDS("Source_Classification_Code.rds")
 
         ## Plotting
         par(mar = c(4,4,2,1), mfcol = c(1, 1))
-        with(meandot, plot(names, emissions, pch = 19 , main = "Baltimore's Yearly Avg. Emissions", xlab = "Year", ylab = "Avg Emissions"))
-        with(meandot, abline(lm(emissions ~ names), lwd = 2)) # linear yearly emissions' means
+        with(findat, plot(year, Emissions_mean, pch = 19 , main = "Baltimore's Yearly Avg. Emissions", xlab = "Year", ylab = "Avg Emissions"))
+        with(findat, abline(lm(Emissions_mean ~ year), lwd = 2)) # linear yearly emissions' means
 
         ## Closing PNG device
         dev.off()
