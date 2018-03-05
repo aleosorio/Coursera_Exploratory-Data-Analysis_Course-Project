@@ -30,7 +30,7 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
 
 # PLOTTING AND SAVING INTO FILE
-        ## Opening PNG device to create "plot1.png"
+        ## Opening PNG device
         png(filename = "plot2.png")
 
         ## Plotting

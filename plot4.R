@@ -32,13 +32,13 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         findat <- filter(unidat, str_detect(unidat$EI.Sector, "Coal")) # filtering by variable "EI.Sector" with values that include string "Coal"
         meandat <- select(findat, year, EI.Sector, Emissions) # selecting required variables
         meandat <- split(meandat, meandat$EI.Sector) # splitting by EI.Sector
-        meandat <- sapply(meandat, function(X) { tapply(X$Emissions, X$year, mean) })# calculating Avg yearly Emissions, by type
-        meandot <- melt(meandat, id = colnames(meandat), measure.vars = meandat) # melting into dataframe with only one "type" variable
+        meandat <- sapply(meandat, function(X) { tapply(X$Emissions, X$year, mean) })# calculating Avg yearly Emissions, by EI.Sector
+        meandot <- melt(meandat, id = colnames(meandat), measure.vars = meandat) # melting into dataframe with only one "EI.Sector" variable
         meandot[,2] <- as.character(meandot[,2])
         names(meandot) <- c("year", "EI.Sector", "Emissions")
 
         # PLOTTING AND SAVING INTO FILE
-        ## Opening PNG device to create "plot1.png"
+        ## Opening PNG device
         png(filename = "plot4.png")
         
         ## Plotting

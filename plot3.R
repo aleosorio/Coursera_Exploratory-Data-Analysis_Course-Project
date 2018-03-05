@@ -31,7 +31,7 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         names(meandot) <- c("year", "type", "Emissions")
 
         # PLOTTING AND SAVING INTO FILE
-        ## Opening PNG device to create "plot1.png"
+        ## Opening PNG device
         png(filename = "plot3.png")
         
         ## Plotting
