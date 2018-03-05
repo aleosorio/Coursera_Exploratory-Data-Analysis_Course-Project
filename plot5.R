@@ -23,21 +23,19 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
         unidat$EI.Sector <- as.character(unidat$EI.Sector)
         
-        ## Subsetting and reshaping dataset into meandot to plot
-        findat <- filter(unidat, str_detect(unidat$EI.Sector, "Vehicles") & unidat$fips == "24510") # filtering by "EI.Sector" (with string "Vehicles") and Baltimore
-        meandat <- select(findat, year, EI.Sector, Emissions) # selecting required variables
-        meandat <- split(meandat, meandat$EI.Sector) # splitting by EI.Sector
-        meandat <- sapply(meandat, function(X) { tapply(X$Emissions, X$year, mean) })# calculating Avg yearly Emissions, by EI.Sector
-        meandot <- melt(meandat, id = colnames(meandat), measure.vars = meandat) # melting into dataframe with only one "EI.Sector" variable
-        meandot[,2] <- as.character(meandot[,2])
-        names(meandot) <- c("year", "EI.Sector", "Emissions")
+        ## Subsetting, grouping and summaryzing into final dataset (findat)
+        findat <- unidat %>%
+                filter(str_detect(.$EI.Sector, "Vehicles") & .$fips == "24510") %>% # filtering by string "Vehicles" in "EI.Sector" and Baltimore
+                select(year, EI.Sector, Emissions) %>% # selecting required variables
+                group_by(year, EI.Sector) %>%
+                summarize(Emissions_mean = mean(Emissions))
 
-        # PLOTTING AND SAVING INTO FILE
+# PLOTTING AND SAVING INTO FILE
         ## Opening PNG device
         png(filename = "plot5.png")
         
         ## Plotting
-        ggplot(meandot, aes(year, Emissions)) +
+        ggplot(findat, aes(year, Emissions_mean)) +
                 geom_point(aes(color = EI.Sector)) +
                 geom_smooth(aes(color = EI.Sector), method = "lm", se = FALSE) +
                 labs(title = "Avg Yearly PM2.5 Emissions, by EI.Sector")
