@@ -25,7 +25,8 @@ sccdat <- readRDS("Source_Classification_Code.rds")
         unidat <- left_join(sumdat, sccdat, by = c("SCC", "SCC"))
 
         ## Subsetting required dataset into meandot to plot
-        meandat <- select(unidat, year, Emissions) # selecting required variables
+        findat <- filter(unidat, unidat$year %in% c(1999, 2002, 2005, 2008)) # filtering by years
+        meandat <- select(findat, year, Emissions) # selecting required variables
         meandot <- tapply(meandat$Emissions, meandat$year, mean) # vector w/yearly emissions' means
         meandot <- data.frame(names = as.integer(row.names(meandot)), emissions = meandot) # dataframe ready to plot
 
