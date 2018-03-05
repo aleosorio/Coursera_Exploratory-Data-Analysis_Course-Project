@@ -16,13 +16,13 @@ setwd("C:/Users/lenovo/Documents/MAO/Aprendizaje/Data Science/Exploratory Data A
 sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this problem
 
 # GENERATING DATASET
-        ## Subsetting and reshaping dataset into meandot to plot
+        ## Subsetting, grouping and summaryzing into final dataset (findat)
         findat <- sumdat %>%
-                filter(.$fips == "24510") %>% # filtering by Baltimore's fip
+                filter(.$fips == "24510") %>% # only Baltimore
                 select(year, type, Emissions) %>% # selecting required variables
                 group_by(year, type) %>%
                 summarize(Emissions_mean = mean(Emissions))
-
+        
         # PLOTTING AND SAVING INTO FILE
         ## Opening PNG device
         png(filename = "plot3.png")

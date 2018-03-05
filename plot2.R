@@ -16,7 +16,7 @@ setwd("C:/Users/lenovo/Documents/MAO/Aprendizaje/Data Science/Exploratory Data A
 sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this problem
 
 # GENERATING DATASET
-        ## Subsetting required dataset into meandot to plot
+        ## Subsetting, grouping and summaryzing into final dataset (findat)
         findat <- sumdat %>%
                 filter(.$fips == "24510") %>% # only Baltimore
                 select(year, Emissions) %>% # selecting required variables
@@ -29,7 +29,7 @@ sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this probl
 
         ## Plotting
         par(mar = c(4,4,2,1), mfcol = c(1, 1))
-        with(findat, plot(year, Emissions_mean, pch = 19 , main = "Baltimore's Yearly Avg. Emissions", xlab = "Year", ylab = "Avg Emissions"))
+        with(findat, plot(year, Emissions_mean, pch = 19 , main = "Baltimore's Yearly Avg. Emissions", xlab = "Year", ylab = "Avg PM2.5 Emissions"))
         with(findat, abline(lm(Emissions_mean ~ year), lwd = 2)) # linear yearly emissions' means
 
         ## Closing PNG device
