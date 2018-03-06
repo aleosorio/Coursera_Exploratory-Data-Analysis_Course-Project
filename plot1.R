@@ -22,7 +22,7 @@ sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this probl
                 filter(.$year %in% c(1999, 2002, 2005, 2008)) %>% # required years
                 select(year, Emissions) %>% # selecting required variables
                 group_by(year) %>%
-                summarize(Emissions_mean = mean(Emissions))
+                summarize(Emissions_total = sum(Emissions))
 
 # PLOTTING AND SAVING INTO FILE
         ## Opening PNG device to create "plot1.png"
@@ -30,8 +30,8 @@ sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this probl
 
         ## Plotting
         par(mar = c(4,4,2,1), mfcol = c(1, 1))
-        with(findat, plot(year, Emissions_mean, pch = 19 , main = "National Yearly Avg. Emissions", xlab = "Year", ylab = "Avg PM2.5 Emissions"))
-        with(findat, abline(lm(Emissions_mean ~ year), lwd = 2)) # linear yearly emissions' means
+        with(findat, plot(year, Emissions_total, pch = 19 , main = "National Yearly Total Emissions", xlab = "Year", ylab = "PM2.5 Emissions in tons."))
+        with(findat, abline(lm(Emissions_total ~ year), lwd = 2)) # linear yearly emissions' means
 
         ## Closing PNG device
         dev.off()
