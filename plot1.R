@@ -31,7 +31,7 @@ sumdat <- readRDS("summarySCC_PM25.rds") # no extra data required for this probl
         ## Plotting
         par(mar = c(4,4,2,1), mfcol = c(1, 1))
         with(findat, plot(year, Emissions_total, pch = 19 , main = "National Yearly Total Emissions", xlab = "Year", ylab = "PM2.5 Emissions in tons."))
-        with(findat, abline(lm(Emissions_total ~ year), lwd = 2)) # linear yearly emissions' means
+        with(findat, abline(lm(Emissions_total ~ year), lwd = 2)) # linear yearly emissions' totals
 
         ## Closing PNG device
         dev.off()
