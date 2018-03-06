@@ -4,8 +4,8 @@
 ## showing the total PM2.5 emission from all sources for each of
 ## the years 1999, 2002, 2005, and 2008.
 
-## ANSWER: Indeed, from a yearly mean of 6.6 in 1999, down to 1.8
-## in 2008.  It can also be seen through linear modeling, on the plot.
+## ANSWER: Indeed, from a yearly total of MM7.3 tons in 1999, down to MM3.5
+## tons in 2008.  It can also be seen through linear modeling, on the plot.
 
 # CALLING LIBRARIES
 library(tidyverse)

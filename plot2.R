@@ -3,8 +3,8 @@
 ## City, Maryland (fips == "24510") from 1999 to 2008? Use the
 ## base plotting system to make a plot answering this question.
 
-## ANSWER: Indeed, from a yearly mean of 10.2 in 1999, down to 2.7
-## in 2008.  Clearly seen through linear modeling, on the plot.
+## ANSWER: Indeed, from a yearly total of 3.3 KTons in 1999, down to 1.9
+## KTons in 2008.  Clearly seen through linear modeling, on the plot.
 
 # CALLING LIBRARIES
 library(tidyverse)
